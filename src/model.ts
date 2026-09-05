@@ -46,6 +46,8 @@ export type Shot = {
   };
 };
 export type Project = {
+  progress?: { stage: string; completed: string; next: string };
+  styleReferences?: { assetId: string; title: string; usage: string }[];
   id: string;
   title: string;
   description: string;

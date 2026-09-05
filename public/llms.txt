@@ -6,6 +6,7 @@ Shared storyboard production workspace. Human and agent clients use the same pub
 
 - GET /api/projects : project IDs and titles.
 - GET /api/projects/{id} : authoritative complete JSON, including revision, notes, shots, assets.
+- Start with progress (stage/completed/next), styleReferences (approved assetId/title/usage), and handoff. These are shown in the project overview. Read each style reference's usage; overall visual reference is distinct from character identity/clothing evidence.
 - Read assemblyPlan for video insertion positions and unresolved cut decisions. Entries identify clip assetId, full-video sourceAssetId, sourceStart/sourceEnd (seconds in the source, NOT final timeline time), shots, placement and status. Also read the notes section 完整视频与接续位置（新会话必读）.
 - Video roles: source = full source video for review/re-cutting; continuation = clip to insert in the final edit; reference = motion/visual reference only. Do not insert reference clips or full source videos into the final edit by default. A clip associated with two shots is not automatically used twice.
 - shots contain shot number, title, visual, audio, set, suggestedDuration, heroAssetId, assetIds and config.jobs.

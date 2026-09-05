@@ -15,6 +15,7 @@ import {
   sizeLabel,
 } from "./model";
 import { AssetCard, Preview } from "./Media";
+import { ProjectBrief } from './ProjectBrief';
 import { downloadZip, saveBlob } from "./download";
 import "./workspace.css";
 
@@ -24,7 +25,7 @@ function App() {
     >([]),
     [project, setProject] = React.useState<Project>(),
     [baseline, setBaseline] = React.useState<Project>();
-  const [section, setSection] = React.useState<Section>("story"),
+  const [section, setSection] = React.useState<Section>("overview"),
     [shotId, setShotId] = React.useState(2),
     [editing, setEditing] = React.useState(false),
     [busy, setBusy] = React.useState(false),
@@ -533,6 +534,7 @@ function App() {
             <>
               {section === "overview" && (
                 <>
+                  <ProjectBrief project={project} editing={editing} onChange={setProject} onOpen={openAsset} />
                   <div className="summary-grid">
                     <div>
                       <span>分镜</span>

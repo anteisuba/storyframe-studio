@@ -3,6 +3,8 @@
   "name": "storyframe-studio",
   "account_id": "9612b02a044205fbf51978e285bcb0ae",
   "main": "server/worker.mjs",
+  "workers_dev": true,
+  "routes": [{"pattern":"storyframe.anteisuba.com","custom_domain":true}],
   "compatibility_date": "2026-09-05",
   "assets": {
     "directory": "./dist",

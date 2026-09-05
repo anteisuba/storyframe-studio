@@ -1,6 +1,8 @@
 # Cloudflare 部署与换电脑接续
 
-站点：https://storyframe-studio.xiuruisu.workers.dev
+主站：https://storyframe.anteisuba.com
+
+备用：https://storyframe-studio.xiuruisu.workers.dev
 
 ## 资源
 
@@ -37,7 +39,15 @@ pnpm exec wrangler deploy
 
 ## 访问
 
-当前使用默认 workers.dev 域名。中国大陆访问需实际网络测试；后续可绑定用户自己的域名，不能把默认域名部署成功等同于所有地区都可达。
+使用用户已有域名的子域名，未购买域名或升级套餐。已有域名续费、账号套餐及超额用量仍按原规则计费。
+
+2026-09-06 Globalping中国大陆节点抽测：自定义域名首页、项目列表API、前端JS、图片共12次请求全部成功（HTTP 200/206），约0.8–2.6秒；包含长沙联通、宁波移动以及腾讯国内机房。默认workers.dev的3次测试均TCP超时。此结果不代表全部运营商、地区及长期稳定性，也不是完整视频加载速度测试。
+
+可复查的公开测试ID：`2oFNCztPL2ratulA90002152i`（首页）、`2dEtWUeiIGhyccXVY0002152k`（API）、`2kIkVt7UaAtxsp3r90002152k`（JS）、`2BDxtB1HdjfY7LooI0002152k`（图片）。通过 `https://globalping.io/?measurement=<id>` 查看。
+
+## 助手接续
+
+公开读取指南：https://storyframe.anteisuba.com/llms.txt 。新会话先读指南，再读 `/api/projects` 和目标项目JSON中的notes、shots、assets；修改前读取最新revision，保存后重读核对。网页中也可以使用有标签的编辑框、保存按钮、素材选择器完成操作。不要覆盖用户已有未保存编辑。
 
 ## 首次迁移验收 · 2026-09-06
 

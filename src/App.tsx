@@ -31,7 +31,7 @@ function App() {
     [busy, setBusy] = React.useState(false),
     [message, setMessage] = React.useState("正在读取项目…");
   const [search, setSearch] = React.useState(""),
-    [status, setStatus] = React.useState("all"),
+    [status, setStatus] = React.useState("current"),
     [density, setDensity] = React.useState("medium"),
     [selection, setSelection] = React.useState<string[]>([]),
     [detailId, setDetailId] = React.useState<string>();
@@ -74,6 +74,7 @@ function App() {
   const picked =
     project?.assets.filter(
       (a) =>
+        !a.blocked &&
         (pickerKind === "all" || categoryOf(a) === pickerKind) &&
         titleOf(a).toLowerCase().includes(pickerSearch.toLowerCase()),
     ) || [];

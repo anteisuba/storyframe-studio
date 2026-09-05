@@ -6,7 +6,7 @@ HERE=Path(__file__).resolve().parent
 base=sys.argv[1].rstrip('/')
 if not base.startswith('https://'): raise SystemExit('HTTPS destination required')
 def request(path, data=None, method=None, content_type='application/json'):
-    req=urllib.request.Request(base+path,data=data,method=method,headers={'Content-Type':content_type})
+    req=urllib.request.Request(base+path,data=data,method=method,headers={'Content-Type':content_type,'User-Agent':'StoryframeStudio-Migration/1.0'})
     with urllib.request.urlopen(req,timeout=180) as response: return json.load(response)
 project=json.load(urllib.request.urlopen('http://127.0.0.1:8788/api/projects/wuwa-eva'))
 files={a['url']:HERE/a['url'].lstrip('/') for a in project['assets']}

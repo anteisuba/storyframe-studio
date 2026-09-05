@@ -6,3 +6,6 @@ data/
 .dev.vars
 .env*
 *.zip
+
+__pycache__/
+*.pyc

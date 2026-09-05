@@ -1,0 +1,15 @@
+const json=(value,status=200)=>Response.json(value,{status});
+const types={'image/png':'.png','image/jpeg':'.jpg','image/webp':'.webp','video/mp4':'.mp4','video/webm':'.webm','audio/mpeg':'.mp3','audio/wav':'.wav','audio/ogg':'.ogg'};
+export default {async fetch(req,env){try{
+ const url=new URL(req.url);
+ if(req.method!=='GET'&&req.headers.get('Origin')&&req.headers.get('Origin')!==url.origin)return json({error:'来源不允许'},403);
+ if(url.pathname==='/api/projects'&&req.method==='GET'){const {results}=await env.DB.prepare('SELECT id,title FROM projects ORDER BY title').all();return json(results)}
+ if(url.pathname==='/api/projects'&&req.method==='POST'){const input=await req.json();const p={id:crypto.randomUUID(),title:String(input.title||'未命名项目').slice(0,200),description:'',revision:0,shots:[],assets:[],notes:''};await env.DB.prepare('INSERT INTO projects VALUES(?,?,?,?)').bind(p.id,p.title,0,JSON.stringify(p)).run();return json(p,201)}
+ const m=url.pathname.match(/^\/api\/projects\/([a-zA-Z0-9-]+)$/);
+ if(m){if(req.method==='GET'){const row=await env.DB.prepare('SELECT body FROM projects WHERE id=?').bind(m[1]).first();return row?json(JSON.parse(row.body)):json({error:'项目不存在'},404)}
+ if(req.method==='PUT'){const text=await req.text();if(text.length>4*1024*1024)return json({error:'项目数据过大'},413);const p=JSON.parse(text);if(p.id!==m[1]||typeof p.title!=='string'||!Number.isInteger(p.revision)||!Array.isArray(p.shots)||!Array.isArray(p.assets))return json({error:'格式错误'},400);const old=p.revision;p.revision++;const result=await env.DB.prepare('UPDATE projects SET title=?,revision=?,body=? WHERE id=? AND revision=?').bind(p.title,p.revision,JSON.stringify(p),p.id,old).run();return result.meta.changes?json(p):json({error:'项目已被修改，请重新载入'},409)}}
+ if(url.pathname==='/api/upload'&&req.method==='POST'){const type=req.headers.get('Content-Type');const ext=types[type];if(!ext)return json({error:'不支持此文件格式'},400);const length=Number(req.headers.get('Content-Length'));if(!length||length>50*1024*1024)return json({error:'文件需为1字节至50MB'},413);const id=crypto.randomUUID();const key=id+ext;await env.MEDIA.put(key,req.body,{httpMetadata:{contentType:type}});return json({id,url:'/media/'+key,bytes:length},201)}
+ if(url.pathname.startsWith('/media/')&&req.method==='GET'){const key=url.pathname.slice(7);if(!/^[a-zA-Z0-9-]+\.[a-zA-Z0-9]+$/.test(key))return json({error:'无效文件名'},400);const object=await env.MEDIA.get(key,{range:req.headers});if(!object)return json({error:'文件不存在'},404);const headers=new Headers();object.writeHttpMetadata(headers);headers.set('etag',object.httpEtag);headers.set('X-Content-Type-Options','nosniff');headers.set('Accept-Ranges','bytes');let status=200;if(object.range&&'offset' in object.range){const {offset,length}=object.range;headers.set('Content-Range',`bytes ${offset}-${offset+length-1}/${object.size}`);status=206}return new Response(object.body,{status,headers})}
+ if(url.pathname.startsWith('/api/'))return json({error:'接口不存在'},404);
+ return env.ASSETS.fetch(req);
+ }catch{return json({error:'请求失败，请检查格式或稍后重试'},400)}}};

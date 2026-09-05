@@ -15,7 +15,7 @@
 
 Cloudflare Workers 承载网页与 API，D1 保存项目数据与版本，R2 保存媒体。普通 Cloudflare 全球网络与 Vercel 均不能保证中国大陆可达。上线后需要用实际域名测试。Cloudflare 中国网络是独立企业服务。
 
-仓库：https://github.com/anteisuba/storyframe-studio 。尚未创建云资源，尚未上线。
+仓库：https://github.com/anteisuba/storyframe-studio 。网站已部署：https://storyframe-studio.xiuruisu.workers.dev 。部署与换电脑说明见 [DEPLOYMENT.md](DEPLOYMENT.md)。素材迁移状态以云端项目列表为准。
 
 ## 当前素材规则
 
@@ -39,9 +39,9 @@ React + TypeScript + Vite。多项目切换与新建、分镜新建和编辑、�
 
 已验证：TypeScript检查、Vite生产构建、浏览器加载与保存、API保存后重读、过期revision返回409、媒体读取。
 
-Cloudflare后端代码在 server/worker.mjs，数据库结构在 server/schema.sql；部署配置样例为 wrangler.example.jsonc。尚未完成云端实测、资源创建和素材同步。不可把本地保存成功当作云端保存成功。
+Cloudflare后端代码在 server/worker.mjs，数据库结构在 server/schema.sql；实际部署配置为 wrangler.jsonc。Workers、D1、R2专用资源已创建，网页与项目列表接口已验证。不可把本地保存成功当作云端保存成功。
 
-待补：素材属性与来源编辑、Seedance独立参数表单、导入恢复界面、历史恢复界面、视频截帧工具及云端端到端验证。生成按钮仍由用户在视频平台手动点击。
+已支持素材属性与来源编辑及Seedance参数编辑。待补：导入恢复界面、历史恢复界面、自动视频截帧工具。生成按钮仍由用户在视频平台手动点击。
 
 
 ## 浅色工作台更新

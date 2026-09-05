@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "storyframe-studio",
+  "account_id": "9612b02a044205fbf51978e285bcb0ae",
+  "main": "server/worker.mjs",
+  "compatibility_date": "2026-09-05",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/media/*"]
+  },
+  "d1_databases": [{"binding":"DB","database_name":"storyframe-studio","database_id":"07727983-94f4-41c5-a0c0-dd8cce00eafb"}],
+  "r2_buckets": [{"binding":"MEDIA","bucket_name":"storyframe-studio-media"}]
+}

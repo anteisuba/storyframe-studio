@@ -396,7 +396,7 @@ function App() {
         </nav>
         <div className="sidebar-foot">
           <span className="online-dot" />
-          本地工作空间<small>云端尚未部署</small>
+          {['localhost', '127.0.0.1'].includes(location.hostname) ? <>本地工作空间<small>数据保存在本机</small></> : <>云端工作空间<small>共享编辑 · 自动保存版本</small></>}
         </div>
       </aside>
       <div className="main-shell">

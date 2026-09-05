@@ -46,6 +46,7 @@ function App() {
     [dragging, setDragging] = React.useState(false);
   const [heroPicker, setHeroPicker] = React.useState(false);
   const replaceInput = React.useRef<HTMLInputElement>(null);
+  const detailPanel = React.useRef<HTMLElement>(null);
   const fileInput = React.useRef<HTMLInputElement>(null),
     dialog = React.useRef<HTMLDialogElement>(null);
   const dirty = JSON.stringify(project) !== JSON.stringify(baseline),
@@ -118,6 +119,16 @@ function App() {
     if (expanded) dialog.current?.showModal();
     else dialog.current?.close();
   }, [expanded]);
+  React.useEffect(() => {
+    if (!detailId || picker || expanded || busy) return;
+    const dismiss = (event: PointerEvent) => {
+      if (event.target instanceof Node && !detailPanel.current?.contains(event.target)) {
+        setDetailId(undefined);
+      }
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [detailId, picker, expanded, busy]);
   function leave() {
     if (busy) return false;
     if (dirty && !window.confirm("有未保存的修改，放弃修改并离开？"))
@@ -1053,6 +1064,7 @@ function App() {
       )}
       {(detail || picker) && (
         <aside
+          ref={detailPanel}
           inert={busy}
           className="drawer"
           aria-label={picker ? "素材选择器" : "素材详情"}
